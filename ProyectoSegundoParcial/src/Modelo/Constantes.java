@@ -11,7 +11,7 @@ package Modelo;
  */
 public class Constantes {
     public static String path_image = "/recursos";
-    
+    public static String path_archivo="src/Recursos/datos.txt";
     private Constantes(){
     }
 }
