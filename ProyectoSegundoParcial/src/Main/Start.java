@@ -5,10 +5,12 @@
  */
 package Main;
 
+import Vista.PaneGuardarNuevo;
 import Vista.PaneVistaPrincipal;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
@@ -19,12 +21,13 @@ import javafx.stage.Stage;
  * @author Tiffy
  */
 public class Start extends Application {
-    
+    public static Scene scene;
     @Override
     public void start(Stage primaryStage) {
         PaneVistaPrincipal vp =new PaneVistaPrincipal();
-        
-        Scene scene = new Scene(vp.getRoot(), 594, 530);
+        PaneGuardarNuevo vn =new PaneGuardarNuevo();
+        scene = new Scene(new Group(),594,530);
+        scene.setRoot(vn.getRoot());
         scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
         primaryStage.setTitle("Genio Politécnico");
         primaryStage.setScene(scene);
