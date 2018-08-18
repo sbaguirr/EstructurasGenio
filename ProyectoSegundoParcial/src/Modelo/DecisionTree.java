@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Scanner;
 
 /**
  *
@@ -63,10 +64,54 @@ public class DecisionTree<E> {
         return this.root == null;
     }
 
-    public  DecisionTree<E> CargarSalidas(String filename) throws IOException {
-        DecisionTree<E> a = new DecisionTree<>();
+    public Node<String> getRoot() {
+        return root;
+    }
+
+    
+    
+     public boolean recorrerArbol(String direccion) {
+        if (direccion.toLowerCase().equals("si")) {
+            return recorrerarArbol(this.root.getLeft(), direccion);
+        } else {
+            return recorrerarArbol(this.root.getRight(), direccion);
+        }
+    }
+
+    private boolean recorrerarArbol(Node<String> nodo, String direccion) {
+        boolean salir = false;
+        if (nodo.getRight() == null && nodo.getLeft() == null) {
+            //label.setText("Es un " + nodo.getData());
+            System.out.println("Es un " + nodo.getData()+"?");
+            Scanner d = new Scanner(System.in);
+            direccion = d.nextLine();
+            if (direccion.toLowerCase().equals("si")) {
+                // label.setText("gané");
+                System.out.println("gané");
+                return true;
+            } else if (direccion.equals("no")) {
+                // label.setText("perdi");
+                System.out.println("perdí");
+                return true;
+            }
+        }
+
+        System.out.println(nodo.getData());
+        Scanner d = new Scanner(System.in);
+        direccion = d.nextLine();
+        if (direccion.toLowerCase().equals("si")) {
+            recorrerarArbol(nodo.getLeft(), direccion);
+        } else if (direccion.toLowerCase().equals("no")) {
+            recorrerarArbol(nodo.getRight(), direccion);
+        }
+
+        return salir;
+    }
+
+    public  static DecisionTree<String> CargarSalidas() {
+        DecisionTree<String> a = new DecisionTree<>();
         List<String> l = new LinkedList<>();
-        try (BufferedReader hf = new BufferedReader(new InputStreamReader(new FileInputStream(filename), "ISO-8859-1"))) {
+        try (BufferedReader hf = new BufferedReader(new InputStreamReader(new FileInputStream(Constantes.path_archivo), "ISO-8859-1"))) {
             String line;
 
             while ((line = hf.readLine()) != null) {
@@ -79,6 +124,11 @@ public class DecisionTree<E> {
             System.out.println(ex.getMessage());
         }
         return a;
+    }
+    
+     @Override
+    public String toString() {
+        return  root.toString();
     }
 }
 

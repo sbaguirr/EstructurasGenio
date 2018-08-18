@@ -8,6 +8,7 @@ package Main;
 import Modelo.Constantes;
 import Modelo.DecisionTree;
 import java.io.IOException;
+import java.util.Scanner;
 
 /**
  *
@@ -19,8 +20,12 @@ public class ProyectoSegundoParcial {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-        DecisionTree<String> g = new DecisionTree<>();
-         g.CargarSalidas(Constantes.path_archivo).preOrden();
+         DecisionTree<String> t= DecisionTree.CargarSalidas();
+
+        System.out.println(t.getRoot());
+        Scanner d = new Scanner(System.in);
+        String direccion = d.nextLine();
+        t.recorrerArbol(direccion);
     }
-    
+
 }
