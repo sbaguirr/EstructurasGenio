@@ -58,7 +58,7 @@ public class PaneGuardarNuevo {
         VBox hbox = new VBox();
         Label titleLbl = new Label("¡Ayúdame a mejorar mi predicción!");
         titleLbl.setFont(new Font("Segoe Print", 22));
-        titleLbl.setStyle("-fx-text-fill: #F5F5F5;");
+        titleLbl.setStyle("-fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
         hbox.getChildren().add(titleLbl);
         hbox.setAlignment(Pos.TOP_CENTER);
         hbox.setPadding(new Insets(20, 20, 20, 20));
@@ -75,10 +75,10 @@ public class PaneGuardarNuevo {
     private void inicializarObjetos() {
         save = new Button("Guardar");
         save.setPrefSize(150, 50);
-        save.setStyle("-fx-font: 14 Verdana; -fx-base: #009BFF; -fx-text-fill: #F5F5F5;");
+        save.setStyle("-fx-font: 14 Verdana; -fx-base: #009BFF; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
         playAgain = new Button("Jugar de nuevo");
         playAgain.setPrefSize(150, 50);
-        playAgain.setStyle("-fx-font: 14 Verdana; -fx-base: #FFD700; -fx-text-fill: #F5F5F5;");
+        playAgain.setStyle("-fx-font: 14 Verdana; -fx-base: #FFD700; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
         estiloBotones();
     }
     
@@ -92,7 +92,7 @@ public class PaneGuardarNuevo {
     }
     
     private Label estiloLabel(Label lbl){
-        lbl.setStyle("-fx-font: 14 Verdana; -fx-base: #48D1CC; -fx-text-fill: #F5F5F5;");
+        lbl.setStyle("-fx-font: 14 Verdana; -fx-base: #48D1CC; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
         lbl.setAlignment(Pos.CENTER);
         //lbl.setPadding(new Insets(10, 10, 10, 10));
         return lbl;
@@ -102,7 +102,7 @@ public class PaneGuardarNuevo {
         VBox vbox = new VBox();
         HBox h = new HBox();
         Label label_animal = new Label("☆ ¿Qué animal estabas pensando?    ");
-        label_animal.setStyle("-fx-font: 14 Verdana; -fx-base: #48D1CC; -fx-text-fill: #F5F5F5;");
+        label_animal.setStyle("-fx-font: 14 Verdana; -fx-base: #48D1CC; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
         label_animal.setAlignment(Pos.CENTER);
         txtAnimal = new TextField();
         Button b = new Button("Ok");
@@ -150,8 +150,8 @@ public class PaneGuardarNuevo {
         RadioButton rb2 = new RadioButton();
         rb1.setText("Si");
         rb2.setText("No");
-        rb1.setStyle("-fx-font: 14 Verdana; -fx-text-fill: #F5F5F5;");
-        rb2.setStyle("-fx-font: 14 Verdana; -fx-text-fill: #F5F5F5;");
+        rb1.setStyle("-fx-font: 14 Verdana; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
+        rb2.setStyle("-fx-font: 14 Verdana; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
         rb1.setToggleGroup(grupo);
         rb2.setToggleGroup(grupo);
         estiloLabel(lbl2);
