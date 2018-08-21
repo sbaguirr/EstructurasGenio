@@ -34,8 +34,10 @@ import javafx.scene.text.Font;
 public class PaneGuardarNuevo {
 
     private BorderPane root;
-    private Button save, playAgain;
-    Label l1, lbl2, lbel3; 
+    public Button save, playAgain;
+    Label l1, lbl2, lbel3, lastNode; 
+    RadioButton botonSI, botonNO;
+    ToggleGroup grupo;
     TextField txtAnimal, txtAnimal2, quest;
     HBox h_msj;
 
@@ -92,7 +94,7 @@ public class PaneGuardarNuevo {
     }
     
     private Label estiloLabel(Label lbl){
-        lbl.setStyle("-fx-font: 14 Verdana; -fx-base: #48D1CC; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
+        lbl.setStyle("-fx-font: 12 Verdana; -fx-base: #48D1CC; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
         lbl.setAlignment(Pos.CENTER);
         //lbl.setPadding(new Insets(10, 10, 10, 10));
         return lbl;
@@ -102,7 +104,7 @@ public class PaneGuardarNuevo {
         VBox vbox = new VBox();
         HBox h = new HBox();
         Label label_animal = new Label("☆ ¿Qué animal estabas pensando?    ");
-        label_animal.setStyle("-fx-font: 14 Verdana; -fx-base: #48D1CC; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
+        label_animal.setStyle("-fx-font: 12 Verdana; -fx-base: #48D1CC; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
         label_animal.setAlignment(Pos.CENTER);
         txtAnimal = new TextField();
         Button b = new Button("Ok");
@@ -127,14 +129,14 @@ public class PaneGuardarNuevo {
         HBox horiz = new HBox();
         VBox v1 = new VBox();
         l1 = new Label("☆ Escribe una pregunta que me permita diferenciar ");
-        Label l5 = new Label("entre un(a) ");
-        Label l2 = new Label(" y un(a)");
-        Label l3 = new Label(" elefante");
+        Label l5 = new Label("entre un(a)");
+        Label l2 = new Label(" y");
+        lastNode = new Label();
         estiloLabel(l1);
         estiloLabel(l2);
         estiloLabel(l5);
-        estiloLabel(l3);
-        horiz.getChildren().addAll(l5,lab,l2,l3);
+        estiloLabel(lastNode);
+        horiz.getChildren().addAll(l5,lab,l2,lastNode);
         horiz.setAlignment(Pos.CENTER);
         horiz.setSpacing(5);
         v1.getChildren().addAll(l1,horiz);
@@ -146,16 +148,14 @@ public class PaneGuardarNuevo {
         
         lbl2 = new Label("☆ La respuesta a la pregunta: '"+quest.getText()+"', es si o no?");
         ToggleGroup grupo = new ToggleGroup();
-        RadioButton rb1 = new RadioButton();
-        RadioButton rb2 = new RadioButton();
-        rb1.setText("Si");
-        rb2.setText("No");
-        rb1.setStyle("-fx-font: 14 Verdana; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
-        rb2.setStyle("-fx-font: 14 Verdana; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
-        rb1.setToggleGroup(grupo);
-        rb2.setToggleGroup(grupo);
+        RadioButton botonSI = new RadioButton("Si");
+        RadioButton botonNO = new RadioButton("No");
+        botonSI.setStyle("-fx-font: 12 Verdana; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
+        botonNO.setStyle("-fx-font: 12 Verdana; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
+        botonSI.setToggleGroup(grupo);
+        botonNO.setToggleGroup(grupo);
         estiloLabel(lbl2);
-        h.getChildren().addAll(rb1, rb2);
+        h.getChildren().addAll(botonSI, botonNO);
         h.setPadding(new Insets(10, 10, 10, 10));
         h.setSpacing(10);
         h.setAlignment(Pos.CENTER);

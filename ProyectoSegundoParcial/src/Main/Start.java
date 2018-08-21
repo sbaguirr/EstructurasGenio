@@ -24,10 +24,9 @@ public class Start extends Application {
     public static Scene scene;
     @Override
     public void start(Stage primaryStage) {
-        PaneVistaPrincipal vp =new PaneVistaPrincipal();
-        PaneGuardarNuevo vn =new PaneGuardarNuevo();
-        scene = new Scene(new Group(),594,530);
-        scene.setRoot(vn.getRoot());
+        PaneVistaPrincipal vp = new PaneVistaPrincipal();
+        scene = new Scene(new Group(),600,550);
+        scene.setRoot(vp.getRoot());
         scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
         primaryStage.setTitle("Genio Politécnico");
         primaryStage.setScene(scene);

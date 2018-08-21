@@ -5,6 +5,7 @@
  */
 package Vista;
 
+import static Main.Start.scene;
 import Modelo.Constantes;
 import Modelo.DecisionTree;
 import Modelo.Node;
@@ -121,9 +122,10 @@ public class PaneVistaPrincipal {
 
     private void botonesFinal() {
         HBox j = new HBox();
-        j.getChildren().addAll(start, playAgain);
+        j.setPadding(new Insets(40, 70, 60, 70));
         j.setSpacing(20);
         j.setAlignment(Pos.CENTER);
+        j.getChildren().addAll(start, playAgain);
         root.setBottom(j);
     }
 
@@ -151,30 +153,37 @@ public class PaneVistaPrincipal {
       private boolean recorrerArbol(String direccion) {
         boolean salir = false;
         if (nodo.getRight() == null && nodo.getLeft() == null) {
-            preguntas.setText("Es un " + nodo.getData() + "?"); //rosita, esto nunca aparece en el label xd
+            preguntas.setText("Es un " + nodo.getData().substring(2) + "?"); //rosita, esto nunca aparece en el label xd
             if (direccion.equals("si")) {
-                preguntas.setText("gané");
+                preguntas.setText("   ¡Gané!");
                 deshabilitarBoton();
                 return true;
             } else if (direccion.equals("no")) {
-                preguntas.setText("perdi");
-
+                preguntas.setText("   ¡Perdí!");
+                deshabilitarBoton();
+                PaneGuardarNuevo pg = new PaneGuardarNuevo();
+                scene.setRoot(pg.getRoot());
+                pg.lastNode.setText(nodo.getData().substring(3));
+                pg.save.setOnAction(e->{
+                    nodo.setData("#P "+pg.quest.getText());
+                    //falta recuperar opciones SI/NO para poder guardar en el archivo
+                });
                 return true;
             }
         }
         if (direccion.equals("si")) {
             nodo = nodo.getLeft();
-            preguntas.setText(nodo.getData());
+            preguntas.setText(" "+nodo.getData().substring(2));
         } else if (direccion.equals("no")) {
             nodo = nodo.getRight();
-            preguntas.setText(nodo.getData());
+            preguntas.setText(" "+nodo.getData().substring(2));
         }
         return salir;
     }
       
       public void jugar() {
         this.start.setOnAction(e -> {
-            preguntas.setText(nodo.getData());
+            preguntas.setText(" "+nodo.getData().substring(2));
         });
     }
 
@@ -186,7 +195,7 @@ public class PaneVistaPrincipal {
         this.playAgain.setOnAction(e -> {
             nodo = arbol.getRoot();
             habilitarBoton();
-            preguntas.setText(nodo.getData());
+            preguntas.setText(" "+nodo.getData().substring(2));
         });
     }
 
