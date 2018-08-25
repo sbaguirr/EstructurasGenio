@@ -5,7 +5,6 @@
  */
 package Main;
 
-import Modelo.Constantes;
 import Modelo.DecisionTree;
 import java.io.IOException;
 import java.util.Scanner;

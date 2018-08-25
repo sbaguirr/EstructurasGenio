@@ -38,7 +38,7 @@ public class PaneGuardarNuevo {
     Label l1, lbl2, lbel3, lastNode; 
     RadioButton botonSI, botonNO;
     ToggleGroup grupo;
-    TextField txtAnimal, txtAnimal2, quest;
+    TextField txtNewAnimal, txtQuestion;
     HBox h_msj;
 
     public PaneGuardarNuevo() {
@@ -106,21 +106,20 @@ public class PaneGuardarNuevo {
         Label label_animal = new Label("☆ ¿Qué animal estabas pensando?    ");
         label_animal.setStyle("-fx-font: 12 Verdana; -fx-base: #48D1CC; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
         label_animal.setAlignment(Pos.CENTER);
-        txtAnimal = new TextField();
+        txtNewAnimal = new TextField();
         Button b = new Button("Ok");
-        txtAnimal2 = new TextField();
-        quest = new TextField();
+        txtQuestion = new TextField();
         desactivarObjetos();
         HBox hb = new HBox();
-        hb.getChildren().addAll(label_animal, txtAnimal, b);
+        hb.getChildren().addAll(label_animal, txtNewAnimal, b);
         hb.setPadding(new Insets(20, 0, 20, 0));//bordes arriba, derecha, abajo, izquierda
         hb.setAlignment(Pos.CENTER);
         
         Label lab = new Label();
         b.setOnAction(e->{
-            if(!txtAnimal.getText().equals("")){
+            if(!txtNewAnimal.getText().equals("")){
                 this.activarObjetos();
-                lab.setText(txtAnimal.getText());
+                lab.setText(txtNewAnimal.getText());
                 estiloLabel(lab);
             }
         });
@@ -142,7 +141,7 @@ public class PaneGuardarNuevo {
         v1.getChildren().addAll(l1,horiz);
         v1.setAlignment(Pos.CENTER);
         vertB.setPadding(new Insets(15, 45, 10, 45));
-        vertB.getChildren().addAll(hb,v1,txtAnimal2); 
+        vertB.getChildren().addAll(hb,v1,txtQuestion); 
         
         VBox f = new VBox();
         
@@ -182,13 +181,11 @@ public class PaneGuardarNuevo {
     }
     
     private void desactivarObjetos() {
-        txtAnimal2.setDisable(true);
-        quest.setDisable(true);
+        txtQuestion.setDisable(true);
     }
 
     private void activarObjetos() {
-        txtAnimal2.setDisable(false);
-        quest.setDisable(false);
+        txtQuestion.setDisable(false);
     }
   
     private void estiloBotones() {

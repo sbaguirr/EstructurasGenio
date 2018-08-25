@@ -11,8 +11,6 @@ import Modelo.DecisionTree;
 import static Modelo.DecisionTree.guardar;
 import Modelo.Node;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -26,6 +24,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.stage.StageStyle;
 
 /**
  *
@@ -38,8 +37,10 @@ public class PaneVistaPrincipal {
     private Button si, no, playAgain, start;
     private Node<String> nodo;
     private DecisionTree arbol;
+    private PaneGuardarNuevo pg;
 
     public PaneVistaPrincipal() {
+        pg = new PaneGuardarNuevo();
         root = new BorderPane();
         arbol = DecisionTree.CargarSalidas();
         nodo = arbol.getRoot();
@@ -154,6 +155,15 @@ public class PaneVistaPrincipal {
         alert.showAndWait();
     }
     
+    public static void dialogoAdvertencia() {
+        Alert advertencia = new Alert(Alert.AlertType.WARNING);
+        advertencia.setTitle("Error");
+        advertencia.setContentText("Debe asegurarse de llenar todos los campos");
+        advertencia.setHeaderText(null);
+        advertencia.initStyle(StageStyle.UTILITY);
+        advertencia.showAndWait();
+    }
+    
     public void si() {
         this.si.setOnAction(e -> {
             try {
@@ -186,28 +196,32 @@ public class PaneVistaPrincipal {
             } else if (direccion.equals("no")) {
                 preguntas.setText("   ¡Perdí!");
                 deshabilitarBoton();
-                PaneGuardarNuevo pg = new PaneGuardarNuevo();
+                pg = new PaneGuardarNuevo();
                 scene.setRoot(pg.getRoot());
                 pg.lastNode.setText(nodo.getData().substring(3));
                 pg.save.setOnAction(e->{
-                    Node<String> nod = new Node(nodo.getData());
-                    Node<String> newQuest= new Node("#R "+pg.txtAnimal.getText());
-                    String pregunta = pg.txtAnimal2.getText();                    
-                    nodo.setData("#P "+ pregunta);
-                    if(pg.botonSI.isSelected()){
-                        nodo.setLeft(newQuest);
-                        nodo.setRight(nod);
-                    }else if(pg.botonNO.isSelected()){
-                        nodo.setLeft(nod);
-                        nodo.setRight(newQuest);
+                    if(validar()){
+                        Node<String> nod = new Node(nodo.getData());
+                        Node<String> newQuest= new Node("#R "+pg.txtNewAnimal.getText());
+                        String pregunta = pg.txtQuestion.getText();                    
+                        nodo.setData("#P "+ pregunta);
+                        if(pg.botonSI.isSelected()){
+                            nodo.setLeft(newQuest);
+                            nodo.setRight(nod);
+                        }else if(pg.botonNO.isSelected()){
+                            nodo.setLeft(nod);
+                            nodo.setRight(newQuest);
+                        }
+                        try {
+                            guardar(arbol);
+                            System.out.println("Guardado");
+                        } catch (IOException ex) {
+                            VentanaProblemasTecnicos();
+                        }
+                        pg.save.setDisable(true);
+                    }else{
+                        dialogoAdvertencia();
                     }
-                    try {
-                        guardar(arbol);
-                        System.out.println("Guardado");
-                    } catch (IOException ex) {
-                        VentanaProblemasTecnicos();
-                    }
-                    pg.save.setDisable(true);
                 });
                 return true;
             }
@@ -220,6 +234,12 @@ public class PaneVistaPrincipal {
             preguntas.setText(" "+nodo.getData().substring(2));
         }
         return salir;
+    }
+      
+    public boolean validar(){
+        return !pg.txtNewAnimal.getText().equals("") 
+                && !pg.txtQuestion.getText().equals("")
+                && (pg.grupo.getSelectedToggle() != null);
     }
       
     public void jugar() {
@@ -245,6 +265,7 @@ public class PaneVistaPrincipal {
         this.si.setDisable(true);
         this.no.setDisable(true);
     }
+    
     private void habilitarBoton() {
         this.si.setDisable(false);
         this.no.setDisable(false);
