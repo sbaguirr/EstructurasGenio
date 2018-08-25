@@ -25,7 +25,6 @@ public class ProyectoSegundoParcial {
         System.out.println(t.getRoot());
         Scanner d = new Scanner(System.in);
         String direccion = d.nextLine();
-        t.recorrerArbol(direccion);
     }
 
 }

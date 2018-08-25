@@ -17,7 +17,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -153,7 +152,6 @@ public class PaneVistaPrincipal {
       private boolean recorrerArbol(String direccion) {
         boolean salir = false;
         if (nodo.getRight() == null && nodo.getLeft() == null) {
-            preguntas.setText("Es un " + nodo.getData().substring(2) + "?"); //rosita, esto nunca aparece en el label xd
             if (direccion.equals("si")) {
                 preguntas.setText("   ¡Gané!");
                 deshabilitarBoton();
@@ -187,10 +185,6 @@ public class PaneVistaPrincipal {
         });
     }
 
-      /**
-       * A la final no se si solo nos quedamos con un botón 
-       * 
-       */
     public void playAgain() {
         this.playAgain.setOnAction(e -> {
             nodo = arbol.getRoot();

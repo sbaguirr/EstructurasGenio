@@ -6,14 +6,15 @@
 package Modelo;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Scanner;
 
 /**
  *
@@ -46,17 +47,11 @@ public class DecisionTree<E> {
         return nodo;
     }
 
-    public void preOrden() {
-        if (!isEmpty()) {
-            preOrden(this.root);
-        }
-    }
-
-    private void preOrden(Node<String> nodo) {
+    public static void preOrden(Node<String> nodo,BufferedWriter br) {
         if (nodo != null) {
             System.out.println(nodo.getData());
-            preOrden(nodo.getLeft()); 
-            preOrden(nodo.getRight()); 
+            preOrden(nodo.getLeft(),br); 
+            preOrden(nodo.getRight(),br); 
         }
     }
 
@@ -66,46 +61,6 @@ public class DecisionTree<E> {
 
     public Node<String> getRoot() {
         return root;
-    }
-
-    
-    
-     public boolean recorrerArbol(String direccion) {
-        if (direccion.toLowerCase().equals("si")) {
-            return recorrerarArbol(this.root.getLeft(), direccion);
-        } else {
-            return recorrerarArbol(this.root.getRight(), direccion);
-        }
-    }
-
-    private boolean recorrerarArbol(Node<String> nodo, String direccion) {
-        boolean salir = false;
-        if (nodo.getRight() == null && nodo.getLeft() == null) {
-            //label.setText("Es un " + nodo.getData());
-            System.out.println("Es un " + nodo.getData()+"?");
-            Scanner d = new Scanner(System.in);
-            direccion = d.nextLine();
-            if (direccion.toLowerCase().equals("si")) {
-                // label.setText("gané");
-                System.out.println("gané");
-                return true;
-            } else if (direccion.equals("no")) {
-                // label.setText("perdi");
-                System.out.println("perdí");
-                return true;
-            }
-        }
-
-        System.out.println(nodo.getData());
-        Scanner d = new Scanner(System.in);
-        direccion = d.nextLine();
-        if (direccion.toLowerCase().equals("si")) {
-            recorrerarArbol(nodo.getLeft(), direccion);
-        } else if (direccion.toLowerCase().equals("no")) {
-            recorrerarArbol(nodo.getRight(), direccion);
-        }
-
-        return salir;
     }
 
     public  static DecisionTree<String> CargarSalidas() {
@@ -129,6 +84,17 @@ public class DecisionTree<E> {
      @Override
     public String toString() {
         return  root.toString();
+    }
+    
+        public static void guardar(DecisionTree<String> arbolito) throws IOException {
+        try (BufferedWriter br = new BufferedWriter(new FileWriter(Constantes.path_archivo))) {
+            preOrden(arbolito.getRoot(),br);
+            
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+
+        }
+
     }
 }
 
