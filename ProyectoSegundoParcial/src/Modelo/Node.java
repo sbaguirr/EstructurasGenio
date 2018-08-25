@@ -5,9 +5,12 @@
  */
 package Modelo;
 
+import java.util.Objects;
+
 /**
  *
  * @author Tiffy
+ * @param <E>
  */
 public class Node<E> {
     private E data;
@@ -47,4 +50,20 @@ public class Node<E> {
     public String toString() {
         return data.toString();
     } 
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + Objects.hashCode(this.data);
+        return hash;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || !(o instanceof Node)){
+            return false;
+        }   
+        Node<E> n = (Node<E>)o;
+        return (this.data.equals(n.getData()));
+    }  
 }

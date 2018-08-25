@@ -146,10 +146,10 @@ public class PaneGuardarNuevo {
         
         VBox f = new VBox();
         
-        lbl2 = new Label("☆ La respuesta a la pregunta: '"+quest.getText()+"', es si o no?");
-        ToggleGroup grupo = new ToggleGroup();
-        RadioButton botonSI = new RadioButton("Si");
-        RadioButton botonNO = new RadioButton("No");
+        lbl2 = new Label("☆ La respuesta a la pregunta anterior, es si o no?");
+        grupo = new ToggleGroup();
+        botonSI = new RadioButton("Si");
+        botonNO = new RadioButton("No");
         botonSI.setStyle("-fx-font: 12 Verdana; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
         botonNO.setStyle("-fx-font: 12 Verdana; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
         botonSI.setToggleGroup(grupo);
@@ -169,16 +169,16 @@ public class PaneGuardarNuevo {
     }
     
     private HBox crearSeccionFin(){
-        HBox h_msj = new HBox();
+        HBox msje = new HBox();
         lbel3 = new Label("Gracias, he aprendido algo nuevo!");
         BackgroundFill myBF = new BackgroundFill(Color.rgb(52, 6, 64), new CornerRadii(5), new Insets(0,0,0,0));
         lbel3.setBackground(new Background(myBF));
         lbel3.setPadding(new Insets(5,5,5,5));
         lbel3.setAlignment(Pos.CENTER);
-        h_msj.getChildren().addAll(lbel3);
-        h_msj.setAlignment(Pos.CENTER);
+        msje.getChildren().addAll(lbel3);
+        msje.setAlignment(Pos.CENTER);
         estiloLabel(lbel3);
-        return h_msj;
+        return msje;
     }
     
     private void desactivarObjetos() {

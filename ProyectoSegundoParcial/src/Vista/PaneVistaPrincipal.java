@@ -8,9 +8,14 @@ package Vista;
 import static Main.Start.scene;
 import Modelo.Constantes;
 import Modelo.DecisionTree;
+import static Modelo.DecisionTree.guardar;
 import Modelo.Node;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
@@ -81,6 +86,8 @@ public class PaneVistaPrincipal {
         no = new Button("No");
         no.setStyle("-fx-font: 14 Verdana; -fx-base: #C71585; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
         no.setPrefSize(110, 50);
+         deshabilitarBoton();
+        
         start = new Button("Empezar");
         start.setPrefSize(150, 50);
 
@@ -137,19 +144,36 @@ public class PaneVistaPrincipal {
         k.getChildren().add(myLabel);
         root.setLeft(k);
     }
-     public void si() {
+    
+    public static void VentanaProblemasTecnicos() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText("Lo sentimos, estamos teniendo inconvenientes técnicos");
+        alert.showAndWait();
+    }
+    
+    public void si() {
         this.si.setOnAction(e -> {
-            recorrerArbol("si");;
+            try {
+                recorrerArbol("si");
+            } catch (IOException ex) {
+                VentanaProblemasTecnicos();
+            }
         });
     }
 
     public void no() {
         this.no.setOnAction(e -> {
-            recorrerArbol("no");
+            try {
+                recorrerArbol("no");
+            } catch (IOException ex) {
+                VentanaProblemasTecnicos();
+            }
         });
 
     }
-      private boolean recorrerArbol(String direccion) {
+      private boolean recorrerArbol(String direccion) throws IOException {
         boolean salir = false;
         if (nodo.getRight() == null && nodo.getLeft() == null) {
             if (direccion.equals("si")) {
@@ -163,9 +187,20 @@ public class PaneVistaPrincipal {
                 scene.setRoot(pg.getRoot());
                 pg.lastNode.setText(nodo.getData().substring(3));
                 pg.save.setOnAction(e->{
-                    nodo.setData("#P "+pg.quest.getText());
-                    //falta recuperar opciones SI/NO para poder guardar en el archivo
+                    Node<String> nod = new Node(nodo.getData());
+                    Node<String> newQuest= new Node("#R "+pg.txtAnimal.getText());
+                    String pregunta = pg.txtAnimal2.getText();                    
+                    nodo.setData("#P "+ pregunta);
+                    if(pg.botonSI.isSelected()){
+                        nodo.setLeft(newQuest);
+                        nodo.setRight(nod);
+                    }else if(pg.botonNO.isSelected()){
+                        nodo.setLeft(nod);
+                        nodo.setRight(newQuest);
+                    }
+                   
                 });
+                
                 return true;
             }
         }
@@ -181,6 +216,7 @@ public class PaneVistaPrincipal {
       
       public void jugar() {
         this.start.setOnAction(e -> {
+            habilitarBoton();
             preguntas.setText(" "+nodo.getData().substring(2));
         });
     }

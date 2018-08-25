@@ -19,14 +19,16 @@ import java.util.ListIterator;
 /**
  *
  * @author Tiffy
+ * @param <E>
  */
 public class DecisionTree<E> {
-     private Node<String> root;
-
+    private Node<String> root;
+    private static List<String> lista;
+    
     public DecisionTree() {
         this.root = null;
+        lista = new LinkedList<>();
     }
-
     
     public boolean add(Iterator<String> it) {
         this.root = add(it, this.root);
@@ -47,9 +49,10 @@ public class DecisionTree<E> {
         return nodo;
     }
 
-    public static void preOrden(Node<String> nodo,BufferedWriter br) {
+    public static void preOrden(Node<String> nodo,BufferedWriter br) throws IOException {
         if (nodo != null) {
-            System.out.println(nodo.getData());
+            br.write(nodo.getData());
+            br.newLine();
             preOrden(nodo.getLeft(),br); 
             preOrden(nodo.getRight(),br); 
         }
@@ -86,7 +89,7 @@ public class DecisionTree<E> {
         return  root.toString();
     }
     
-        public static void guardar(DecisionTree<String> arbolito) throws IOException {
+    public static void guardar(DecisionTree<String> arbolito) throws IOException {
         try (BufferedWriter br = new BufferedWriter(new FileWriter(Constantes.path_archivo))) {
             preOrden(arbolito.getRoot(),br);
             
