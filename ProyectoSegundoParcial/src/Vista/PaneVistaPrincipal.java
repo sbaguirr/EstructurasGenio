@@ -112,6 +112,7 @@ public class PaneVistaPrincipal {
         w.setImage(imagePlay);
         playAgain.setContentDisplay(ContentDisplay.TOP);
         playAgain.setGraphic(w);
+        playAgain.setDisable(true);
     }
 
     private void crearSeccionPreguntas() {
@@ -179,6 +180,8 @@ public class PaneVistaPrincipal {
             if (direccion.equals("si")) {
                 preguntas.setText("   ¡Gané!");
                 deshabilitarBoton();
+                start.setDisable(true);
+                playAgain.setDisable(false);
                 return true;
             } else if (direccion.equals("no")) {
                 preguntas.setText("   ¡Perdí!");
@@ -198,9 +201,14 @@ public class PaneVistaPrincipal {
                         nodo.setLeft(nod);
                         nodo.setRight(newQuest);
                     }
-                   
+                    try {
+                        guardar(arbol);
+                        System.out.println("Guardado");
+                    } catch (IOException ex) {
+                        VentanaProblemasTecnicos();
+                    }
+                    pg.save.setDisable(true);
                 });
-                
                 return true;
             }
         }
@@ -214,9 +222,10 @@ public class PaneVistaPrincipal {
         return salir;
     }
       
-      public void jugar() {
+    public void jugar() {
         this.start.setOnAction(e -> {
             habilitarBoton();
+            playAgain.setDisable(true);
             preguntas.setText(" "+nodo.getData().substring(2));
         });
     }
@@ -224,8 +233,11 @@ public class PaneVistaPrincipal {
     public void playAgain() {
         this.playAgain.setOnAction(e -> {
             nodo = arbol.getRoot();
+            start.setDisable(false);
+            playAgain.setDisable(true);
             habilitarBoton();
-            preguntas.setText(" "+nodo.getData().substring(2));
+            preguntas.setText("");
+            deshabilitarBoton();
         });
     }
 
