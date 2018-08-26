@@ -22,14 +22,15 @@ import java.util.ListIterator;
  * @param <E>
  */
 public class DecisionTree<E> {
+
     private Node<String> root;
     private static List<String> lista;
-    
+
     public DecisionTree() {
         this.root = null;
         lista = new LinkedList<>();
     }
-    
+
     public boolean add(Iterator<String> it) {
         this.root = add(it, this.root);
         return true;
@@ -42,19 +43,19 @@ public class DecisionTree<E> {
         if (nodo.getData().startsWith("#R")) {
             return nodo;
         }
-        if (nodo.getData().startsWith("#P")) { 
+        if (nodo.getData().startsWith("#P")) {
             nodo.setLeft(add(it, nodo.getLeft()));
             nodo.setRight(add(it, nodo.getRight()));
         }
         return nodo;
     }
 
-    public static void preOrden(Node<String> nodo,BufferedWriter br) throws IOException {
+    public static void preOrden(Node<String> nodo, BufferedWriter br) throws IOException {
         if (nodo != null) {
             br.write(nodo.getData());
             br.newLine();
-            preOrden(nodo.getLeft(),br); 
-            preOrden(nodo.getRight(),br); 
+            preOrden(nodo.getLeft(), br);
+            preOrden(nodo.getRight(), br);
         }
     }
 
@@ -62,11 +63,29 @@ public class DecisionTree<E> {
         return this.root == null;
     }
 
+    public Node<E> searchNode(E data) {
+        return searchNode(data, (Node<E>) this.root);
+    }
+
+    private Node<E> searchNode(E data, Node<E> p) {
+        if (p == null) {
+            return null;
+        } else if (p.getData().equals(data)) {
+            return p;
+        }
+        Node<E> i = searchNode(data, p.getLeft());
+        if (i != null) {
+            return i;
+        }
+        Node<E> j = searchNode(data, p.getLeft());
+        return j;
+    }
+
     public Node<String> getRoot() {
         return root;
     }
 
-    public  static DecisionTree<String> CargarSalidas() {
+    public static DecisionTree<String> cargarSalidas() {
         DecisionTree<String> a = new DecisionTree<>();
         List<String> l = new LinkedList<>();
         try (BufferedReader hf = new BufferedReader(new InputStreamReader(new FileInputStream(Constantes.path_archivo), "ISO-8859-1"))) {
@@ -75,24 +94,24 @@ public class DecisionTree<E> {
             while ((line = hf.readLine()) != null) {
                 l.add(line);
             }
-           ListIterator<String> it = l.listIterator();
-           a.add(it);
+            ListIterator<String> it = l.listIterator();
+            a.add(it);
 
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         return a;
     }
-    
-     @Override
+
+    @Override
     public String toString() {
-        return  root.toString();
+        return root.toString();
     }
-    
+
     public static void guardar(DecisionTree<String> arbolito) throws IOException {
         try (BufferedWriter br = new BufferedWriter(new FileWriter(Constantes.path_archivo))) {
-            preOrden(arbolito.getRoot(),br);
-            
+            preOrden(arbolito.getRoot(), br);
+
         } catch (IOException e) {
             System.out.println(e.getMessage());
 
@@ -100,5 +119,3 @@ public class DecisionTree<E> {
 
     }
 }
-
-

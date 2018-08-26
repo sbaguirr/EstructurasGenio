@@ -17,7 +17,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
@@ -45,7 +44,6 @@ public class PaneGuardarNuevo {
         root = new BorderPane();
         root.setPrefSize(594, 530);
         BackgroundFill myBF = new BackgroundFill(Color.DARKMAGENTA, new CornerRadii(1), new Insets(0.0, 0.0, 0.0, 0.0));
-        //root.setBackground(new Background(myBF));
         root.setId("fondoMap");        
         inicializarObjetos();
         llamarMetodos();
@@ -70,7 +68,6 @@ public class PaneGuardarNuevo {
     private void llamarMetodos() {
         crearSeccionTitulo();
         crearSeccionPreguntas();
-        crearSeccionFin();
         botonesFinal();
     }
 
@@ -96,7 +93,6 @@ public class PaneGuardarNuevo {
     private Label estiloLabel(Label lbl){
         lbl.setStyle("-fx-font: 12 Verdana; -fx-base: #48D1CC; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
         lbl.setAlignment(Pos.CENTER);
-        //lbl.setPadding(new Insets(10, 10, 10, 10));
         return lbl;
     }
 
@@ -112,7 +108,7 @@ public class PaneGuardarNuevo {
         desactivarObjetos();
         HBox hb = new HBox();
         hb.getChildren().addAll(label_animal, txtNewAnimal, b);
-        hb.setPadding(new Insets(20, 0, 20, 0));//bordes arriba, derecha, abajo, izquierda
+        hb.setPadding(new Insets(20, 0, 20, 0));
         hb.setAlignment(Pos.CENTER);
         
         Label lab = new Label();
@@ -161,24 +157,12 @@ public class PaneGuardarNuevo {
         f.getChildren().addAll(lbl2, h);
         f.setAlignment(Pos.CENTER);
          
-        vbox.getChildren().addAll(vertB,f,crearSeccionFin());
+        vbox.getChildren().addAll(vertB,f);
         vbox.setPadding(new Insets(20, 20, 20, 20));
         vbox.setSpacing(20);
         root.setCenter(vbox);
     }
-    
-    private HBox crearSeccionFin(){
-        HBox msje = new HBox();
-        lbel3 = new Label("Gracias, he aprendido algo nuevo!");
-        BackgroundFill myBF = new BackgroundFill(Color.rgb(52, 6, 64), new CornerRadii(5), new Insets(0,0,0,0));
-        lbel3.setBackground(new Background(myBF));
-        lbel3.setPadding(new Insets(5,5,5,5));
-        lbel3.setAlignment(Pos.CENTER);
-        msje.getChildren().addAll(lbel3);
-        msje.setAlignment(Pos.CENTER);
-        estiloLabel(lbel3);
-        return msje;
-    }
+   
     
     private void desactivarObjetos() {
         txtQuestion.setDisable(true);

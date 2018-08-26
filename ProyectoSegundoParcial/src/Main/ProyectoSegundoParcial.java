@@ -19,7 +19,7 @@ public class ProyectoSegundoParcial {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
-         DecisionTree<String> t= DecisionTree.CargarSalidas();
+         DecisionTree<String> t= DecisionTree.cargarSalidas();
 
         System.out.println(t.getRoot());
         Scanner d = new Scanner(System.in);

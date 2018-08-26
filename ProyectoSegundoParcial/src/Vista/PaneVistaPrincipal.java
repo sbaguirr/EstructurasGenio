@@ -42,7 +42,7 @@ public class PaneVistaPrincipal {
     public PaneVistaPrincipal() {
         pg = new PaneGuardarNuevo();
         root = new BorderPane();
-        arbol = DecisionTree.CargarSalidas();
+        arbol = DecisionTree.cargarSalidas();
         nodo = arbol.getRoot();
         root.setId("fondoMap");
         inicializarObjetos();
@@ -87,8 +87,8 @@ public class PaneVistaPrincipal {
         no = new Button("No");
         no.setStyle("-fx-font: 14 Verdana; -fx-base: #C71585; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
         no.setPrefSize(110, 50);
-         deshabilitarBoton();
-        
+        deshabilitarBoton();
+
         start = new Button("Empezar");
         start.setPrefSize(150, 50);
 
@@ -146,16 +146,16 @@ public class PaneVistaPrincipal {
         k.getChildren().add(myLabel);
         root.setLeft(k);
     }
-    
-    public static void VentanaProblemasTecnicos() {
+
+    private void ventanaProblemasTecnicos() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText(null);
         alert.setContentText("Lo sentimos, estamos teniendo inconvenientes técnicos");
         alert.showAndWait();
     }
-    
-    public static void dialogoAdvertencia() {
+
+    private void dialogoAdvertencia() {
         Alert advertencia = new Alert(Alert.AlertType.WARNING);
         advertencia.setTitle("Error");
         advertencia.setContentText("Debe asegurarse de llenar todos los campos");
@@ -163,13 +163,31 @@ public class PaneVistaPrincipal {
         advertencia.initStyle(StageStyle.UTILITY);
         advertencia.showAndWait();
     }
-    
+
+    private void dialogoFin() {
+        Alert advertencia = new Alert(Alert.AlertType.INFORMATION);
+        advertencia.setTitle("Gracias por jugar!");
+        advertencia.setContentText("Aprendo constantemente, juega de nuevo para adivinar el animal que estas pensando");
+        advertencia.setHeaderText(null);
+        advertencia.initStyle(StageStyle.UTILITY);
+        advertencia.showAndWait();
+    }
+
+    private void animalYaExiste() {
+        Alert advertencia = new Alert(Alert.AlertType.ERROR);
+        advertencia.setTitle(" :(  ");
+        advertencia.setContentText("Hey! ya conozco ese animal");
+        advertencia.setHeaderText(null);
+        advertencia.initStyle(StageStyle.UTILITY);
+        advertencia.showAndWait();
+    }
+
     public void si() {
         this.si.setOnAction(e -> {
             try {
                 recorrerArbol("si");
             } catch (IOException ex) {
-                VentanaProblemasTecnicos();
+                ventanaProblemasTecnicos();
             }
         });
     }
@@ -179,12 +197,13 @@ public class PaneVistaPrincipal {
             try {
                 recorrerArbol("no");
             } catch (IOException ex) {
-                VentanaProblemasTecnicos();
+                ventanaProblemasTecnicos();
             }
         });
 
     }
-      private boolean recorrerArbol(String direccion) throws IOException {
+
+    private boolean recorrerArbol(String direccion) throws IOException {
         boolean salir = false;
         if (nodo.getRight() == null && nodo.getLeft() == null) {
             if (direccion.equals("si")) {
@@ -199,27 +218,26 @@ public class PaneVistaPrincipal {
                 pg = new PaneGuardarNuevo();
                 scene.setRoot(pg.getRoot());
                 pg.lastNode.setText(nodo.getData().substring(3));
-                pg.save.setOnAction(e->{
-                    if(validar()){
-                        Node<String> nod = new Node(nodo.getData());
-                        Node<String> newQuest= new Node("#R "+pg.txtNewAnimal.getText());
-                        String pregunta = pg.txtQuestion.getText();                    
-                        nodo.setData("#P "+ pregunta);
-                        if(pg.botonSI.isSelected()){
-                            nodo.setLeft(newQuest);
-                            nodo.setRight(nod);
-                        }else if(pg.botonNO.isSelected()){
-                            nodo.setLeft(nod);
-                            nodo.setRight(newQuest);
+                pg.save.setOnAction(e -> {
+                    if (validar()) {
+                        if (animalNoRepetido(pg.txtNewAnimal.getText())) {
+                            Node<String> nod = new Node(nodo.getData());
+                            Node<String> newQuest = new Node("#R " + pg.txtNewAnimal.getText());
+                            String pregunta = pg.txtQuestion.getText();
+                            nodo.setData("#P " + pregunta);
+                            if (pg.botonSI.isSelected()) {
+                                nodo.setLeft(newQuest);
+                                nodo.setRight(nod);
+                            } else if (pg.botonNO.isSelected()) {
+                                nodo.setLeft(nod);
+                                nodo.setRight(newQuest);
+                            }
+                            guardarArbol(arbol);
+                            pg.save.setDisable(true);
+                        } else {
+                            animalYaExiste();
                         }
-                        try {
-                            guardar(arbol);
-                            System.out.println("Guardado");
-                        } catch (IOException ex) {
-                            VentanaProblemasTecnicos();
-                        }
-                        pg.save.setDisable(true);
-                    }else{
+                    } else {
                         dialogoAdvertencia();
                     }
                 });
@@ -228,25 +246,39 @@ public class PaneVistaPrincipal {
         }
         if (direccion.equals("si")) {
             nodo = nodo.getLeft();
-            preguntas.setText(" "+nodo.getData().substring(2));
+            preguntas.setText(" " + nodo.getData().substring(2));
         } else if (direccion.equals("no")) {
             nodo = nodo.getRight();
-            preguntas.setText(" "+nodo.getData().substring(2));
+            preguntas.setText(" " + nodo.getData().substring(2));
         }
         return salir;
     }
-      
-    public boolean validar(){
-        return !pg.txtNewAnimal.getText().equals("") 
+
+    public boolean validar() {
+        return !pg.txtNewAnimal.getText().equals("")
                 && !pg.txtQuestion.getText().equals("")
                 && (pg.grupo.getSelectedToggle() != null);
     }
-      
+
+    private void guardarArbol(DecisionTree arbol) {
+        try {
+            guardar(arbol);
+            dialogoFin();
+        } catch (IOException ex) {
+            ventanaProblemasTecnicos();
+        }
+    }
+
+    private boolean animalNoRepetido(String animalNuevo) {
+        Node<String> buscar = arbol.searchNode("#R " + animalNuevo);
+        return buscar == null;
+    }
+
     public void jugar() {
         this.start.setOnAction(e -> {
             habilitarBoton();
             playAgain.setDisable(true);
-            preguntas.setText(" "+nodo.getData().substring(2));
+            preguntas.setText(" " + nodo.getData().substring(2));
         });
     }
 
@@ -265,7 +297,7 @@ public class PaneVistaPrincipal {
         this.si.setDisable(true);
         this.no.setDisable(true);
     }
-    
+
     private void habilitarBoton() {
         this.si.setDisable(false);
         this.no.setDisable(false);
