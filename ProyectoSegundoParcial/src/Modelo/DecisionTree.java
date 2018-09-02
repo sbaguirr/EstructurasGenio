@@ -15,6 +15,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -24,11 +26,9 @@ import java.util.ListIterator;
 public class DecisionTree<E> {
 
     private Node<String> root;
-    private static List<String> lista;
 
     public DecisionTree() {
         this.root = null;
-        lista = new LinkedList<>();
     }
 
     public boolean add(Iterator<String> it) {
@@ -59,10 +59,6 @@ public class DecisionTree<E> {
         }
     }
 
-    private boolean isEmpty() {
-        return this.root == null;
-    }
-
     public Node<E> searchNode(E data) {
         return searchNode(data, (Node<E>) this.root);
     }
@@ -77,8 +73,8 @@ public class DecisionTree<E> {
         if (i != null) {
             return i;
         }
-        Node<E> j = searchNode(data, p.getLeft());
-        return j;
+       return searchNode(data, p.getLeft());
+         
     }
 
     public Node<String> getRoot() {
@@ -88,7 +84,7 @@ public class DecisionTree<E> {
     public static DecisionTree<String> cargarSalidas() {
         DecisionTree<String> a = new DecisionTree<>();
         List<String> l = new LinkedList<>();
-        try (BufferedReader hf = new BufferedReader(new InputStreamReader(new FileInputStream(Constantes.path_archivo), "ISO-8859-1"))) {
+        try (BufferedReader hf = new BufferedReader(new InputStreamReader(new FileInputStream(Constantes.PATH_ARCHIVO), "ISO-8859-1"))) {
             String line;
 
             while ((line = hf.readLine()) != null) {
@@ -98,7 +94,8 @@ public class DecisionTree<E> {
             a.add(it);
 
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+             Logger logger = Logger.getLogger("Log"); 
+           logger.log(Level.INFO, ex.toString());
         }
         return a;
     }
@@ -109,12 +106,12 @@ public class DecisionTree<E> {
     }
 
     public static void guardar(DecisionTree<String> arbolito) throws IOException {
-        try (BufferedWriter br = new BufferedWriter(new FileWriter(Constantes.path_archivo))) {
+        try (BufferedWriter br = new BufferedWriter(new FileWriter(Constantes.PATH_ARCHIVO))) {
             preOrden(arbolito.getRoot(), br);
 
         } catch (IOException e) {
-            System.out.println(e.getMessage());
-
+           Logger logger = Logger.getLogger("Log"); 
+           logger.log(Level.INFO, e.toString());
         }
 
     }

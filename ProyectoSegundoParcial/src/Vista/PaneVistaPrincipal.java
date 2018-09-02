@@ -5,7 +5,7 @@
  */
 package Vista;
 
-import static Main.Start.scene;
+import Main.Start;
 import Modelo.Constantes;
 import Modelo.DecisionTree;
 import static Modelo.DecisionTree.guardar;
@@ -34,7 +34,10 @@ public class PaneVistaPrincipal {
 
     private BorderPane root;
     private Label preguntas;
-    private Button si, no, playAgain, start;
+    private Button si;
+    private Button no;
+    private Button playAgain;
+    private Button start;
     private Node<String> nodo;
     private DecisionTree arbol;
     private PaneGuardarNuevo pg;
@@ -68,7 +71,7 @@ public class PaneVistaPrincipal {
     private void llamarMetodos() {
         crearSeccionTitulo();
         crearSeccionPreguntas();
-        seccionMuñeco();
+        seccionAvatar();
         botonesFinal();
         jugar();
         si();
@@ -101,14 +104,14 @@ public class PaneVistaPrincipal {
 
     private void estiloBotones() {
 
-        Image imagePlayr = new Image(getClass().getResource(Constantes.path_image + "/play-button.png").toExternalForm());
+        Image imagePlayr = new Image(getClass().getResource(Constantes.PATH_IMAGE+"/play-button.png").toExternalForm());
         ImageView r = new ImageView();
         r.setImage(imagePlayr);
         start.setStyle("-fx-font: 14 Verdana; -fx-base: #48D1CC; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
         start.setContentDisplay(ContentDisplay.TOP);
         start.setGraphic(r);
 
-        Image imagePlay = new Image(getClass().getResource(Constantes.path_image + "/replay.png").toExternalForm());
+        Image imagePlay = new Image(getClass().getResource(Constantes.PATH_IMAGE+"/replay.png").toExternalForm());
         ImageView w = new ImageView();
         w.setImage(imagePlay);
         playAgain.setContentDisplay(ContentDisplay.TOP);
@@ -137,9 +140,9 @@ public class PaneVistaPrincipal {
         root.setBottom(j);
     }
 
-    private void seccionMuñeco() {
+    private void seccionAvatar() {
         VBox k = new VBox();
-        Image image = new Image(getClass().getResourceAsStream(Constantes.path_image + "/excalibur.png"));
+        Image image = new Image(getClass().getResourceAsStream(Constantes.PATH_IMAGE+"/excalibur.png"));
         Label myLabel = new Label();
         myLabel.setGraphic(new ImageView(image));
         k.setPadding(new Insets(30, 0, 0, 5));
@@ -209,38 +212,24 @@ public class PaneVistaPrincipal {
             if (direccion.equals("si")) {
                 preguntas.setText("   ¡Gané!");
                 deshabilitarBoton();
-                start.setDisable(true);
-                playAgain.setDisable(false);
+                deshabilitarBotones();
                 return true;
             } else if (direccion.equals("no")) {
                 preguntas.setText("   ¡Perdí!");
                 deshabilitarBoton();
-                pg = new PaneGuardarNuevo();
-                scene.setRoot(pg.getRoot());
+                this.start.setDisable(true);
+                pg = new PaneGuardarNuevo(); 
+                Start.SCENE.setRoot(pg.getRoot());
                 pg.lastNode.setText(nodo.getData().substring(3));
                 pg.save.setOnAction(e -> {
                     if (validar()) {
-                        if (animalNoRepetido(pg.txtNewAnimal.getText())) {
-                            Node<String> nod = new Node(nodo.getData());
-                            Node<String> newQuest = new Node("#R " + pg.txtNewAnimal.getText());
-                            String pregunta = pg.txtQuestion.getText();
-                            nodo.setData("#P " + pregunta);
-                            if (pg.botonSI.isSelected()) {
-                                nodo.setLeft(newQuest);
-                                nodo.setRight(nod);
-                            } else if (pg.botonNO.isSelected()) {
-                                nodo.setLeft(nod);
-                                nodo.setRight(newQuest);
-                            }
-                            guardarArbol(arbol);
-                            pg.save.setDisable(true);
-                        } else {
-                            animalYaExiste();
-                        }
+                        botonGuardar(pg.txtNewAnimal.getText(), pg.txtQuestion.getText(),
+                                nodo, pg.botonSI.isSelected(), pg.botonNO.isSelected());
                     } else {
                         dialogoAdvertencia();
                     }
                 });
+               
                 return true;
             }
         }
@@ -254,10 +243,35 @@ public class PaneVistaPrincipal {
         return salir;
     }
 
-    public boolean validar() {
+    private void deshabilitarBotones() {
+        start.setDisable(true);
+        playAgain.setDisable(false);
+    }
+
+    private boolean validar() {
         return !pg.txtNewAnimal.getText().equals("")
                 && !pg.txtQuestion.getText().equals("")
                 && (pg.grupo.getSelectedToggle() != null);
+    }
+
+    private void botonGuardar(String animal, String pregunta, Node<String> nodo, boolean bsi, boolean bno) {
+        if (animalNoRepetido(animal)) {
+            Node<String> nod = new Node(nodo.getData());
+            Node<String> newQuest = new Node("#R " + animal);
+            nodo.setData("#P " + pregunta);
+            if (bsi) {
+                nodo.setLeft(newQuest);
+                nodo.setRight(nod);
+            } else if (bno) {
+                nodo.setLeft(nod);
+                nodo.setRight(newQuest);
+            }
+            guardarArbol(arbol);
+            pg.save.setDisable(true);
+        } else {
+            animalYaExiste();
+        }
+
     }
 
     private void guardarArbol(DecisionTree arbol) {
@@ -286,7 +300,6 @@ public class PaneVistaPrincipal {
         this.playAgain.setOnAction(e -> {
             nodo = arbol.getRoot();
             start.setDisable(false);
-            playAgain.setDisable(true);
             habilitarBoton();
             preguntas.setText("");
             deshabilitarBoton();
@@ -302,4 +315,5 @@ public class PaneVistaPrincipal {
         this.si.setDisable(false);
         this.no.setDisable(false);
     }
+
 }

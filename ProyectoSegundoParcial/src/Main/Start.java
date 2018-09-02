@@ -16,15 +16,14 @@ import javafx.stage.Stage;
  * @author Tiffy
  */
 public class Start extends Application {
-    public static Scene scene;
+    public static final Scene SCENE = new Scene(new Group(),600,550);
     @Override
     public void start(Stage primaryStage) {
         PaneVistaPrincipal vp = new PaneVistaPrincipal();
-        scene = new Scene(new Group(),600,550);
-        scene.setRoot(vp.getRoot());
-        scene.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
+        SCENE.setRoot(vp.getRoot());
+        SCENE.getStylesheets().addAll(this.getClass().getResource("style.css").toExternalForm());
         primaryStage.setTitle("Genio Politécnico");
-        primaryStage.setScene(scene);
+        primaryStage.setScene(SCENE);
         primaryStage.show();
     }
 

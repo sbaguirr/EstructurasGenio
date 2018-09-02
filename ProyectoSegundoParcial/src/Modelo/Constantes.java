@@ -10,8 +10,8 @@ package Modelo;
  * @author Tiffy
  */
 public class Constantes {
-    public static String path_image = "/recursos";
-    public static String path_archivo="src/Recursos/datos.txt";
+    public static final String PATH_IMAGE = "/recursos";
+    public static final String PATH_ARCHIVO="src/recursos/datos.txt";
     private Constantes(){
     }
 }

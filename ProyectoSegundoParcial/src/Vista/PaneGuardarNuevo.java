@@ -5,7 +5,8 @@
  */
 package Vista;
 
-import static Main.Start.scene;
+
+import Main.Start;
 import Modelo.Constantes;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -33,18 +34,19 @@ import javafx.scene.text.Font;
 public class PaneGuardarNuevo {
 
     private BorderPane root;
-    public Button save, playAgain;
-    Label l1, lbl2, lbel3, lastNode; 
-    RadioButton botonSI, botonNO;
-    ToggleGroup grupo;
-    TextField txtNewAnimal, txtQuestion;
-    HBox h_msj;
+    protected Button save;
+    private Button playAgain;
+    protected Label lastNode;
+    protected RadioButton botonSI;
+    protected RadioButton botonNO;
+    protected ToggleGroup grupo;
+    protected TextField txtNewAnimal;
+    protected TextField txtQuestion;
 
     public PaneGuardarNuevo() {
         root = new BorderPane();
+        root.setId("fondoMap");
         root.setPrefSize(594, 530);
-        BackgroundFill myBF = new BackgroundFill(Color.DARKMAGENTA, new CornerRadii(1), new Insets(0.0, 0.0, 0.0, 0.0));
-        root.setId("fondoMap");        
         inicializarObjetos();
         llamarMetodos();
 
@@ -80,7 +82,7 @@ public class PaneGuardarNuevo {
         playAgain.setStyle("-fx-font: 14 Verdana; -fx-base: #FFD700; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
         estiloBotones();
     }
-    
+
     private void botonesFinal() {
         HBox j = new HBox();
         j.getChildren().addAll(save, playAgain);
@@ -89,8 +91,8 @@ public class PaneGuardarNuevo {
         j.setPadding(new Insets(40, 50, 40, 50));
         root.setBottom(j);
     }
-    
-    private Label estiloLabel(Label lbl){
+
+    private Label estiloLabel(Label lbl) {
         lbl.setStyle("-fx-font: 12 Verdana; -fx-base: #48D1CC; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
         lbl.setAlignment(Pos.CENTER);
         return lbl;
@@ -99,31 +101,31 @@ public class PaneGuardarNuevo {
     private void crearSeccionPreguntas() {
         VBox vbox = new VBox();
         HBox h = new HBox();
-        Label label_animal = new Label("☆ ¿Qué animal estabas pensando?    ");
-        label_animal.setStyle("-fx-font: 12 Verdana; -fx-base: #48D1CC; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
-        label_animal.setAlignment(Pos.CENTER);
+        Label labelAnimal = new Label("☆ ¿Qué animal estabas pensando?    ");
+        labelAnimal.setStyle("-fx-font: 12 Verdana; -fx-base: #48D1CC; -fx-text-fill: #F5F5F5; -fx-font-weight: bold;");
+        labelAnimal.setAlignment(Pos.CENTER);
         txtNewAnimal = new TextField();
         Button b = new Button("Ok");
         txtQuestion = new TextField();
         desactivarObjetos();
         HBox hb = new HBox();
-        hb.getChildren().addAll(label_animal, txtNewAnimal, b);
+        hb.getChildren().addAll(labelAnimal, txtNewAnimal, b);
         hb.setPadding(new Insets(20, 0, 20, 0));
         hb.setAlignment(Pos.CENTER);
-        
+
         Label lab = new Label();
-        b.setOnAction(e->{
-            if(!txtNewAnimal.getText().equals("")){
+        b.setOnAction(e -> {
+            if (!txtNewAnimal.getText().equals("")) {
                 this.activarObjetos();
                 lab.setText(txtNewAnimal.getText());
                 estiloLabel(lab);
             }
         });
-                
+
         VBox vertB = new VBox();
         HBox horiz = new HBox();
         VBox v1 = new VBox();
-        l1 = new Label("☆ Escribe una pregunta que me permita diferenciar ");
+        Label l1 = new Label("☆ Escribe una pregunta que me permita diferenciar ");
         Label l5 = new Label("entre un(a)");
         Label l2 = new Label(" y");
         lastNode = new Label();
@@ -131,17 +133,17 @@ public class PaneGuardarNuevo {
         estiloLabel(l2);
         estiloLabel(l5);
         estiloLabel(lastNode);
-        horiz.getChildren().addAll(l5,lab,l2,lastNode);
+        horiz.getChildren().addAll(l5, lab, l2, lastNode);
         horiz.setAlignment(Pos.CENTER);
         horiz.setSpacing(5);
-        v1.getChildren().addAll(l1,horiz);
+        v1.getChildren().addAll(l1, horiz);
         v1.setAlignment(Pos.CENTER);
         vertB.setPadding(new Insets(15, 45, 10, 45));
-        vertB.getChildren().addAll(hb,v1,txtQuestion); 
-        
+        vertB.getChildren().addAll(hb, v1, txtQuestion);
+
         VBox f = new VBox();
-        
-        lbl2 = new Label("☆ La respuesta a la pregunta anterior, es si o no?");
+
+        Label lbl2 = new Label("☆ La respuesta a la pregunta anterior, es si o no?");
         grupo = new ToggleGroup();
         botonSI = new RadioButton("Si");
         botonNO = new RadioButton("No");
@@ -156,14 +158,13 @@ public class PaneGuardarNuevo {
         h.setAlignment(Pos.CENTER);
         f.getChildren().addAll(lbl2, h);
         f.setAlignment(Pos.CENTER);
-         
-        vbox.getChildren().addAll(vertB,f);
+
+        vbox.getChildren().addAll(vertB, f);
         vbox.setPadding(new Insets(20, 20, 20, 20));
         vbox.setSpacing(20);
         root.setCenter(vbox);
     }
-   
-    
+
     private void desactivarObjetos() {
         txtQuestion.setDisable(true);
     }
@@ -171,22 +172,23 @@ public class PaneGuardarNuevo {
     private void activarObjetos() {
         txtQuestion.setDisable(false);
     }
-  
+
     private void estiloBotones() {
-        Image imagePlayr = new Image(getClass().getResource(Constantes.path_image + "/save.png").toExternalForm());
+        Image imagePlayr = new Image(getClass().getResource(Constantes.PATH_IMAGE+"/save.png").toExternalForm());
         ImageView r = new ImageView();
         r.setImage(imagePlayr);
         save.setContentDisplay(ContentDisplay.TOP);
         save.setGraphic(r);
-        
-        Image imagePlay = new Image(getClass().getResource(Constantes.path_image + "/replay.png").toExternalForm());
+
+        Image imagePlay = new Image(getClass().getResource(Constantes.PATH_IMAGE+"/replay.png").toExternalForm());
         ImageView w = new ImageView();
         w.setImage(imagePlay);
         playAgain.setContentDisplay(ContentDisplay.TOP);
         playAgain.setGraphic(w);
-        playAgain.setOnAction(e->{
+        playAgain.setOnAction(e -> {
             PaneVistaPrincipal v = new PaneVistaPrincipal();
-            scene.setRoot(v.getRoot());
+            Start.SCENE.setRoot(v.getRoot());
         });
     }
+
 }
